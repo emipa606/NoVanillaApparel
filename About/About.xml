@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>No vanilla apparel</name>
+  <packageId>Mlie.NoVanillaApparel</packageId>
+  <author>Mlie</author>
+  <url>https://github.com/emipa606/NoVanillaApparel</url>
+  <supportedVersions>
+    <li>1.1</li>
+    <li>1.2</li>
+  </supportedVersions>
+  <modDependencies />
+  <loadAfter />
+  <description>Tries to remove all vanilla apparel from the game.
+
+To no cause to much hard errors it iterates through all apparel and sets properties to values that make them not spawn in the game and their recipes not usable for any faction. It deos not remove apparel from saves or scenario-starts but no new apparel should spawn.  
+
+For players that want to only use and find modded apparel.
+
+Base-classes are untouched so they still can be used by mods.
+
+May cause errors if no other apparel-mods are loaded.</description>
+</ModMetaData>
