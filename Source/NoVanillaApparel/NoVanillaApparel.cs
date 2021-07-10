@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using RimWorld;
 using Verse;
 
 namespace NoVanillaApparel
@@ -42,37 +43,45 @@ namespace NoVanillaApparel
             };
             var vanillaApparel = new List<ThingDef>();
 
-            DefDatabase<ThingDef>.AllDefsListForReading.ForEach(delegate (ThingDef thing)
+            DefDatabase<ThingDef>.AllDefsListForReading.ForEach(delegate(ThingDef thing)
             {
-                if (vanillaApparelDefNames.Contains(thing.defName))
+                if (!vanillaApparelDefNames.Contains(thing.defName))
                 {
-                    thing.destroyOnDrop = true;
-                    thing.generateCommonality = 0;
-                    if (thing.apparel.defaultOutfitTags != null)
-                        thing.apparel.defaultOutfitTags.Clear();
-                    if (thing.apparel.tags != null)
-                        thing.apparel.tags.Clear();
-                    thing.generateAllowChance = 0;
-                    thing.recipeMaker = null;
-                    thing.scatterableOnMapGen = false;
-                    thing.tradeability = RimWorld.Tradeability.None;
-                    if (thing.tradeTags != null)
-                        thing.tradeTags.Clear();
-                    vanillaApparel.Add(thing);
+                    return;
                 }
+
+                thing.destroyOnDrop = true;
+                thing.generateCommonality = 0;
+                thing.apparel.defaultOutfitTags?.Clear();
+
+                thing.apparel.tags?.Clear();
+
+                thing.generateAllowChance = 0;
+                thing.recipeMaker = null;
+                thing.scatterableOnMapGen = false;
+                thing.tradeability = Tradeability.None;
+                thing.tradeTags?.Clear();
+
+                vanillaApparel.Add(thing);
             });
             foreach (var apparel in vanillaApparel)
             {
-                GenGeneric.InvokeStaticMethodOnGenericType(typeof(DefDatabase<>), typeof(ThingDef), "Remove", new object[] { apparel });
+                GenGeneric.InvokeStaticMethodOnGenericType(typeof(DefDatabase<>), typeof(ThingDef), "Remove", apparel);
             }
-            DefDatabase<RecipeDef>.AllDefsListForReading.ForEach(delegate (RecipeDef recipe)
+
+            DefDatabase<RecipeDef>.AllDefsListForReading.ForEach(delegate(RecipeDef recipe)
             {
-                if (recipe.ProducedThingDef != null && vanillaApparelDefNames.Contains(recipe.ProducedThingDef.defName) ||
-                    (from ThingDefCountClass thing in recipe.products where vanillaApparelDefNames.Contains(thing.thingDef.defName) select thing).Count() > 0)
+                if ((recipe.ProducedThingDef == null ||
+                     !vanillaApparelDefNames.Contains(recipe.ProducedThingDef.defName)) &&
+                    !(from ThingDefCountClass thing in recipe.products
+                        where vanillaApparelDefNames.Contains(thing.thingDef.defName)
+                        select thing).Any())
                 {
-                    Log.Message($"factionPrerequisiteTags {recipe.label}");
-                    recipe.factionPrerequisiteTags = new List<string> { "NotForYou" };
+                    return;
                 }
+
+                Log.Message($"factionPrerequisiteTags {recipe.label}");
+                recipe.factionPrerequisiteTags = new List<string> {"NotForYou"};
             });
         }
     }
