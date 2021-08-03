@@ -12,77 +12,50 @@ namespace NoVanillaApparel
         // Token: 0x0600000A RID: 10 RVA: 0x00002678 File Offset: 0x00000878
         static NoVanillaApparel()
         {
-            var vanillaApparelDefNames = new List<string>
+            var vanillaApparel = (from ThingDef apparel in DefDatabase<ThingDef>.AllDefsListForReading
+                where apparel is {IsApparel: true, modContentPack: {IsOfficialMod: true}, destroyOnDrop: false}
+                select apparel).ToList();
+
+            foreach (var thingDef in vanillaApparel)
             {
-                "Apparel_ShieldBelt",
-                "Apparel_CowboyHat",
-                "Apparel_BowlerHat",
-                "Apparel_TribalHeaddress",
-                "Apparel_Tuque",
-                "Apparel_WarMask",
-                "Apparel_WarVeil",
-                "Apparel_SimpleHelmet",
-                "Apparel_AdvancedHelmet",
-                "Apparel_PowerArmorHelmet",
-                "Apparel_ArmorHelmetRecon",
-                "Apparel_PsychicFoilHelmet",
-                "Apparel_SmokepopBelt",
-                "Apparel_TribalA",
-                "Apparel_Parka",
-                "Apparel_Pants",
-                "Apparel_BasicShirt",
-                "Apparel_CollarShirt",
-                "Apparel_Duster",
-                "Apparel_Jacket",
-                "Apparel_PlateArmor",
-                "Apparel_FlakVest",
-                "Apparel_FlakPants",
-                "Apparel_FlakJacket",
-                "Apparel_PowerArmor",
-                "Apparel_ArmorRecon"
-            };
-            var vanillaApparel = new List<ThingDef>();
+                thingDef.destroyOnDrop = true;
+                thingDef.generateCommonality = 0;
+                thingDef.apparel.defaultOutfitTags?.Clear();
 
-            DefDatabase<ThingDef>.AllDefsListForReading.ForEach(delegate(ThingDef thing)
-            {
-                if (!vanillaApparelDefNames.Contains(thing.defName))
-                {
-                    return;
-                }
+                thingDef.apparel.tags?.Clear();
 
-                thing.destroyOnDrop = true;
-                thing.generateCommonality = 0;
-                thing.apparel.defaultOutfitTags?.Clear();
-
-                thing.apparel.tags?.Clear();
-
-                thing.generateAllowChance = 0;
-                thing.recipeMaker = null;
-                thing.scatterableOnMapGen = false;
-                thing.tradeability = Tradeability.None;
-                thing.tradeTags?.Clear();
-
-                vanillaApparel.Add(thing);
-            });
-            foreach (var apparel in vanillaApparel)
-            {
-                GenGeneric.InvokeStaticMethodOnGenericType(typeof(DefDatabase<>), typeof(ThingDef), "Remove", apparel);
+                thingDef.generateAllowChance = 0;
+                thingDef.recipeMaker = null;
+                thingDef.scatterableOnMapGen = false;
+                thingDef.tradeability = Tradeability.None;
+                thingDef.tradeTags?.Clear();
             }
 
-            DefDatabase<RecipeDef>.AllDefsListForReading.ForEach(delegate(RecipeDef recipe)
+            for (var i = vanillaApparel.Count - 1; i > 0; i--)
             {
-                if ((recipe.ProducedThingDef == null ||
-                     !vanillaApparelDefNames.Contains(recipe.ProducedThingDef.defName)) &&
-                    !(from ThingDefCountClass thing in recipe.products
-                        where vanillaApparelDefNames.Contains(thing.thingDef.defName)
-                        select thing).Any())
-                {
-                    return;
-                }
+                GenGeneric.InvokeStaticMethodOnGenericType(typeof(DefDatabase<>), typeof(ThingDef), "Remove",
+                    vanillaApparel[i]);
+            }
 
-                Log.Message($"factionPrerequisiteTags {recipe.label}");
-                recipe.factionPrerequisiteTags = new List<string> {"NotForYou"};
-            });
+            DefDatabase<ThingDef>.ResolveAllReferences();
+
+            var apparelRecipes = from recipe in DefDatabase<RecipeDef>.AllDefsListForReading
+                where vanillaApparel.Contains(recipe.ProducedThingDef) || (from product in recipe.products
+                    where vanillaApparel.Contains(product.thingDef)
+                    select product).Any()
+                select recipe;
+
+            foreach (var apparelRecipe in apparelRecipes)
+            {
+                apparelRecipe.factionPrerequisiteTags = new List<string> {"NotForYou"};
+            }
+
+            DefDatabase<RecipeDef>.ResolveAllReferences();
+
+            var vanillaNames = new List<string>();
+            vanillaApparel.ForEach(def => vanillaNames.Add(def.label));
+            Log.Message(
+                $"[NoVanillaApparel]: Removed {vanillaApparel.Count} vanilla apparel: {string.Join(",", vanillaNames)}");
         }
     }
 }
