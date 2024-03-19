@@ -11,7 +11,7 @@ internal static class NoVanillaApparel
     static NoVanillaApparel()
     {
         var vanillaApparel = (from ThingDef apparel in DefDatabase<ThingDef>.AllDefsListForReading
-            where apparel is { IsApparel: true, modContentPack: { IsOfficialMod: true }, destroyOnDrop: false }
+            where apparel is { IsApparel: true, modContentPack.IsOfficialMod: true, destroyOnDrop: false }
             select apparel).ToList();
 
         foreach (var thingDef in vanillaApparel)
@@ -45,7 +45,7 @@ internal static class NoVanillaApparel
 
         foreach (var apparelRecipe in apparelRecipes)
         {
-            apparelRecipe.factionPrerequisiteTags = new List<string> { "NotForYou" };
+            apparelRecipe.factionPrerequisiteTags = ["NotForYou"];
         }
 
         DefDatabase<RecipeDef>.ResolveAllReferences();
