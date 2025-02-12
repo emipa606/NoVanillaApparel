@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <NVA.ChangeRequiresRestart>Any changes requires a restart to take effect.
+Any selected category will remove anything matching</NVA.ChangeRequiresRestart>
+  <NVA.RemoveHeadgear>Remove headgear</NVA.RemoveHeadgear>
+  <NVA.RemoveUpperBody>Remove upper body</NVA.RemoveUpperBody>
+  <NVA.RemoveLowerBody>Remove lower body</NVA.RemoveLowerBody>
+  <NVA.RemoveArmor>Remove armor</NVA.RemoveArmor>
+  <NVA.ModVersion>Installed mod-version: {0}</NVA.ModVersion>
+</LanguageData>
