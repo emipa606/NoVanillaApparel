@@ -17,9 +17,18 @@ internal static class NoVanillaApparel
             select apparel).ToList();
 
         var apparelToRemove = new List<ThingDef>();
-
+        var removeAll = NoVanillaApparelMod.instance.Settings.RemoveUpperBody &&
+                        NoVanillaApparelMod.instance.Settings.RemoveHeadgear &&
+                        NoVanillaApparelMod.instance.Settings.RemoveLowerBody &&
+                        NoVanillaApparelMod.instance.Settings.RemoveArmor;
         foreach (var thingDef in vanillaApparel)
         {
+            if (removeAll)
+            {
+                apparelToRemove.Add(thingDef);
+                continue;
+            }
+
             var remove = thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.Legs) &&
                          NoVanillaApparelMod.instance.Settings.RemoveLowerBody;
 
@@ -56,6 +65,14 @@ internal static class NoVanillaApparel
 
         for (var i = apparelToRemove.Count - 1; i > 0; i--)
         {
+            apparelToRemove[i].generateCommonality = 0;
+            apparelToRemove[i].weaponTags = [];
+            apparelToRemove[i].tradeTags = [];
+            apparelToRemove[i].apparel.tags = [];
+            apparelToRemove[i].apparel.canBeGeneratedToSatisfyWarmth = false;
+            apparelToRemove[i].apparel.canBeDesiredForIdeo = false;
+            apparelToRemove[i].apparel.canBeGeneratedToSatisfyToxicEnvironmentResistance = false;
+
             GenGeneric.InvokeStaticMethodOnGenericType(typeof(DefDatabase<>), typeof(ThingDef), "Remove",
                 apparelToRemove[i]);
         }
