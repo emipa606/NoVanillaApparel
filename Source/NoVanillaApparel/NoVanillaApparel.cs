@@ -8,7 +8,7 @@ namespace NoVanillaApparel;
 [StaticConstructorOnStartup]
 internal static class NoVanillaApparel
 {
-    private static readonly float armorLimit = 0.4f;
+    private const float ArmorLimit = 0.4f;
 
     static NoVanillaApparel()
     {
@@ -17,10 +17,10 @@ internal static class NoVanillaApparel
             select apparel).ToList();
 
         var apparelToRemove = new List<ThingDef>();
-        var removeAll = NoVanillaApparelMod.instance.Settings.RemoveUpperBody &&
-                        NoVanillaApparelMod.instance.Settings.RemoveHeadgear &&
-                        NoVanillaApparelMod.instance.Settings.RemoveLowerBody &&
-                        NoVanillaApparelMod.instance.Settings.RemoveArmor;
+        var removeAll = NoVanillaApparelMod.Instance.Settings.RemoveUpperBody &&
+                        NoVanillaApparelMod.Instance.Settings.RemoveHeadgear &&
+                        NoVanillaApparelMod.Instance.Settings.RemoveLowerBody &&
+                        NoVanillaApparelMod.Instance.Settings.RemoveArmor;
         foreach (var thingDef in vanillaApparel)
         {
             if (removeAll)
@@ -30,28 +30,28 @@ internal static class NoVanillaApparel
             }
 
             var remove = thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.Legs) &&
-                         NoVanillaApparelMod.instance.Settings.RemoveLowerBody;
+                         NoVanillaApparelMod.Instance.Settings.RemoveLowerBody;
 
             if (!remove && thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.Torso) &&
-                NoVanillaApparelMod.instance.Settings.RemoveUpperBody)
+                NoVanillaApparelMod.Instance.Settings.RemoveUpperBody)
             {
                 remove = true;
             }
 
             if (!remove && thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.FullHead) &&
-                NoVanillaApparelMod.instance.Settings.RemoveHeadgear)
+                NoVanillaApparelMod.Instance.Settings.RemoveHeadgear)
             {
                 remove = true;
             }
 
-            if (!remove && NoVanillaApparelMod.instance.Settings.RemoveArmor)
+            if (!remove && NoVanillaApparelMod.Instance.Settings.RemoveArmor)
             {
                 if (thingDef.StatBaseDefined(StatDefOf.ArmorRating_Blunt) &&
-                    thingDef.GetStatValueAbstract(StatDefOf.ArmorRating_Blunt) > armorLimit ||
+                    thingDef.GetStatValueAbstract(StatDefOf.ArmorRating_Blunt) > ArmorLimit ||
                     thingDef.StatBaseDefined(StatDefOf.ArmorRating_Sharp) &&
-                    thingDef.GetStatValueAbstract(StatDefOf.ArmorRating_Sharp) > armorLimit ||
+                    thingDef.GetStatValueAbstract(StatDefOf.ArmorRating_Sharp) > ArmorLimit ||
                     thingDef.StatBaseDefined(StatDefOf.StuffEffectMultiplierArmor) &&
-                    thingDef.GetStatValueAbstract(StatDefOf.StuffEffectMultiplierArmor) > armorLimit)
+                    thingDef.GetStatValueAbstract(StatDefOf.StuffEffectMultiplierArmor) > ArmorLimit)
                 {
                     remove = true;
                 }

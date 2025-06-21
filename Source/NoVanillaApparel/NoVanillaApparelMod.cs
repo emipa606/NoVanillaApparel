@@ -10,7 +10,7 @@ internal class NoVanillaApparelMod : Mod
     /// <summary>
     ///     The instance of the settings to be read by the mod
     /// </summary>
-    public static NoVanillaApparelMod instance;
+    public static NoVanillaApparelMod Instance;
 
     private static string currentVersion;
 
@@ -20,7 +20,7 @@ internal class NoVanillaApparelMod : Mod
     /// <param name="content"></param>
     public NoVanillaApparelMod(ModContentPack content) : base(content)
     {
-        instance = this;
+        Instance = this;
         Settings = GetSettings<NoVanillaApparelSettings>();
         currentVersion = VersionFromManifest.GetVersionFromModMetaData(content.ModMetaData);
     }
@@ -46,23 +46,23 @@ internal class NoVanillaApparelMod : Mod
     /// <param name="rect"></param>
     public override void DoSettingsWindowContents(Rect rect)
     {
-        var listing_Standard = new Listing_Standard();
-        listing_Standard.Begin(rect);
-        listing_Standard.Label("NVA.ChangeRequiresRestart".Translate());
-        listing_Standard.Gap();
-        listing_Standard.CheckboxLabeled("NVA.RemoveHeadgear".Translate(), ref Settings.RemoveHeadgear);
-        listing_Standard.CheckboxLabeled("NVA.RemoveUpperBody".Translate(), ref Settings.RemoveUpperBody);
-        listing_Standard.CheckboxLabeled("NVA.RemoveLowerBody".Translate(), ref Settings.RemoveLowerBody);
-        listing_Standard.CheckboxLabeled("NVA.RemoveArmor".Translate(), ref Settings.RemoveArmor);
+        var listingStandard = new Listing_Standard();
+        listingStandard.Begin(rect);
+        listingStandard.Label("NVA.ChangeRequiresRestart".Translate());
+        listingStandard.Gap();
+        listingStandard.CheckboxLabeled("NVA.RemoveHeadgear".Translate(), ref Settings.RemoveHeadgear);
+        listingStandard.CheckboxLabeled("NVA.RemoveUpperBody".Translate(), ref Settings.RemoveUpperBody);
+        listingStandard.CheckboxLabeled("NVA.RemoveLowerBody".Translate(), ref Settings.RemoveLowerBody);
+        listingStandard.CheckboxLabeled("NVA.RemoveArmor".Translate(), ref Settings.RemoveArmor);
 
         if (currentVersion != null)
         {
-            listing_Standard.Gap();
+            listingStandard.Gap();
             GUI.contentColor = Color.gray;
-            listing_Standard.Label("NVA.ModVersion".Translate(currentVersion));
+            listingStandard.Label("NVA.ModVersion".Translate(currentVersion));
             GUI.contentColor = Color.white;
         }
 
-        listing_Standard.End();
+        listingStandard.End();
     }
 }
