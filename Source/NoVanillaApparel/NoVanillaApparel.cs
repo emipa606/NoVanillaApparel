@@ -17,34 +17,44 @@ internal static class NoVanillaApparel
             select apparel).ToList();
 
         var apparelToRemove = new List<ThingDef>();
-        var removeAll = NoVanillaApparelMod.Instance.Settings.RemoveUpperBody &&
-                        NoVanillaApparelMod.Instance.Settings.RemoveHeadgear &&
-                        NoVanillaApparelMod.Instance.Settings.RemoveLowerBody &&
-                        NoVanillaApparelMod.Instance.Settings.RemoveArmor;
+        var settings = NoVanillaApparelMod.Instance.Settings;
+        var removeAll = settings.RemoveUpperBody &&
+                        settings.RemoveHeadgear &&
+                        settings.RemoveLowerBody &&
+                        settings.RemoveUtility &&
+                        settings.RemoveArmor;
         foreach (var thingDef in vanillaApparel)
         {
+            var isUtility = thingDef.apparel.layers?.Contains(ApparelLayerDefOf.Belt) == true;
+            if (isUtility && !settings.RemoveUtility)
+            {
+                continue;
+            }
+
             if (removeAll)
             {
                 apparelToRemove.Add(thingDef);
                 continue;
             }
 
-            var remove = thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.Legs) &&
-                         NoVanillaApparelMod.Instance.Settings.RemoveLowerBody;
+            var remove = thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.Legs) && settings.RemoveLowerBody;
 
-            if (!remove && thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.Torso) &&
-                NoVanillaApparelMod.Instance.Settings.RemoveUpperBody)
+            if (!remove && thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.Torso) && settings.RemoveUpperBody)
             {
                 remove = true;
             }
 
-            if (!remove && thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.FullHead) &&
-                NoVanillaApparelMod.Instance.Settings.RemoveHeadgear)
+            if (!remove && thingDef.apparel.CoversBodyPartGroup(BodyPartGroupDefOf.FullHead) && settings.RemoveHeadgear)
             {
                 remove = true;
             }
 
-            if (!remove && NoVanillaApparelMod.Instance.Settings.RemoveArmor)
+            if (!remove && isUtility && settings.RemoveUtility)
+            {
+                remove = true;
+            }
+
+            if (!remove && settings.RemoveArmor)
             {
                 if (thingDef.StatBaseDefined(StatDefOf.ArmorRating_Blunt) &&
                     thingDef.GetStatValueAbstract(StatDefOf.ArmorRating_Blunt) > ArmorLimit ||

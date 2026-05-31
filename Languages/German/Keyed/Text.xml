@@ -8,4 +8,5 @@ Jede ausgewählte Kategorie entfernt alles, was mit</NVA.ChangeRequiresRestart>
   <NVA.RemoveLowerBody>Unterkörper entfernen</NVA.RemoveLowerBody>
   <NVA.RemoveArmor>Rüstung entfernen</NVA.RemoveArmor>
   <NVA.ModVersion>Installierte Mod-Version: {0}</NVA.ModVersion>
+  <NVA.RemoveUtility>Dienstprogramm entfernen</NVA.RemoveUtility>
 </LanguageData>

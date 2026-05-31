@@ -53,6 +53,7 @@ internal class NoVanillaApparelMod : Mod
         listingStandard.CheckboxLabeled("NVA.RemoveHeadgear".Translate(), ref Settings.RemoveHeadgear);
         listingStandard.CheckboxLabeled("NVA.RemoveUpperBody".Translate(), ref Settings.RemoveUpperBody);
         listingStandard.CheckboxLabeled("NVA.RemoveLowerBody".Translate(), ref Settings.RemoveLowerBody);
+        listingStandard.CheckboxLabeled("NVA.RemoveUtility".Translate(), ref Settings.RemoveUtility);
         listingStandard.CheckboxLabeled("NVA.RemoveArmor".Translate(), ref Settings.RemoveArmor);
 
         if (currentVersion != null)

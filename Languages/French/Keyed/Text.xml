@@ -8,4 +8,5 @@ Toute catégorie sélectionnée supprimera tout ce qui correspond à</NVA.Change
   <NVA.RemoveLowerBody>Enlever la partie inférieure du corps</NVA.RemoveLowerBody>
   <NVA.RemoveArmor>Enlever l'armure</NVA.RemoveArmor>
   <NVA.ModVersion>Version de mod installée : {0}</NVA.ModVersion>
+  <NVA.RemoveUtility>Supprimer l'utilitaire</NVA.RemoveUtility>
 </LanguageData>

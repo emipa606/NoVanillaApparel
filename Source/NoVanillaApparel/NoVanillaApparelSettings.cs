@@ -11,6 +11,7 @@ internal class NoVanillaApparelSettings : ModSettings
     public bool RemoveHeadgear = true;
     public bool RemoveLowerBody = true;
     public bool RemoveUpperBody = true;
+    public bool RemoveUtility = true;
 
     /// <summary>
     ///     Saving and loading the values
@@ -22,5 +23,6 @@ internal class NoVanillaApparelSettings : ModSettings
         Scribe_Values.Look(ref RemoveArmor, "RemoveArmor", true);
         Scribe_Values.Look(ref RemoveUpperBody, "RemoveUpperBody", true);
         Scribe_Values.Look(ref RemoveLowerBody, "RemoveLowerBody", true);
+        Scribe_Values.Look(ref RemoveUtility, "RemoveUtility", true);
     }
 }

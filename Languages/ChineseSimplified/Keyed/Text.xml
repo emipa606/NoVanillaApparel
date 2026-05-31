@@ -8,4 +8,5 @@
   <NVA.RemoveLowerBody>移除下半身</NVA.RemoveLowerBody>
   <NVA.RemoveArmor>卸下盔甲</NVA.RemoveArmor>
   <NVA.ModVersion>已安装模块版本：{0}</NVA.ModVersion>
+  <NVA.RemoveUtility>移除实用工具</NVA.RemoveUtility>
 </LanguageData>
